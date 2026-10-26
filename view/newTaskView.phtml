@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css">
+        <title>Nueva tarea</title>
+    </head>
+    <body>
+        <div class="caja-centro">
+        <h2>Nueva tarea</h2>
+        <?php if (!empty($error)): ?>
+            <p class="mensaje-error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+        <form method="POST" action="index.php?c=task&action=nueva">
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" maxlength="150" value="<?= htmlspecialchars($_POST['titulo'] ?? '') ?>" required>
+
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" rows="4"><?= htmlspecialchars($_POST['descripcion'] ?? '') ?></textarea>
+
+            <label for="prioridad">Prioridad:</label>
+            <?php $prioSel = $_POST['prioridad'] ?? 'media'; ?>
+            <select name="prioridad" id="prioridad">
+                <?php foreach (Task::PRIORIDADES as $clave => $nombre): ?>
+                    <option value="<?= $clave ?>" <?= $prioSel === $clave ? 'selected' : '' ?>><?= $nombre ?></option>
+                <?php endforeach; ?>
+            </select>
+
+            <label for="etiquetas">Etiquetas (separadas por comas):</label>
+            <input type="text" id="etiquetas" name="etiquetas" placeholder="clase, urgente, examen" value="<?= htmlspecialchars($_POST['etiquetas'] ?? '') ?>">
+
+            <input type="submit" value="Guardar tarea">
+        </form>
+        <a href="index.php?c=task&action=index"><button type="button" class="boton-gris">Volver a mis tareas</button></a>
+        </div>
+    </body>
+</html>

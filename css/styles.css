@@ -1,0 +1,261 @@
+/* Colores de la página */
+:root {
+    --fondo: #fdf6f0;
+    --tarjeta: #ffffff;
+    --texto: #2d2424;
+    --texto-suave: #8a7a74;
+    --principal: #ff6b4a;
+    --principal-oscuro: #e5532f;
+    --verde: #3aa776;
+    --verde-oscuro: #2c8a60;
+    --rojo: #e5484d;
+    --rojo-oscuro: #c73a3f;
+    --gris: #8a7a74;
+    --gris-oscuro: #6b5d58;
+    --borde: #eedfd5;
+    --sombra: 0 6px 20px rgba(120, 60, 40, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0 16px 40px;
+    background: var(--fondo);
+    color: var(--texto);
+    line-height: 1.5;
+}
+
+a { color: var(--principal); font-weight: bold; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Barra de arriba */
+nav {
+    background: linear-gradient(90deg, #ff6b4a, #ff9a5c);
+    color: #fff;
+    padding: 16px 24px;
+    margin: 0 -16px 32px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: var(--sombra);
+}
+
+nav h1 { margin: 0; font-size: 1.5rem; }
+
+.nav-right {
+    margin-left: auto;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Botones */
+button, input[type="submit"] {
+    background: var(--principal);
+    color: #fff;
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+button:hover, input[type="submit"]:hover { background: var(--principal-oscuro); }
+button:active, input[type="submit"]:active { transform: scale(0.97); }
+
+.boton-verde { background: var(--verde); }
+.boton-verde:hover { background: var(--verde-oscuro); }
+.boton-rojo { background: var(--rojo); }
+.boton-rojo:hover { background: var(--rojo-oscuro); }
+.boton-gris { background: var(--gris); }
+.boton-gris:hover { background: var(--gris-oscuro); }
+
+.boton-editar {
+    background: transparent;
+    color: var(--principal);
+    border: 2px solid var(--principal);
+    padding: 8px 16px; /* 2px menos para compensar el borde */
+}
+.boton-editar:hover { background: var(--principal); color: #fff; }
+
+.boton-compartir {
+    background: transparent;
+    color: #6c5ce7;
+    border: 2px solid #6c5ce7;
+    padding: 8px 16px;
+}
+.boton-compartir:hover { background: #6c5ce7; color: #fff; }
+
+/* El botón de cerrar sesión se ve sobre el degradado */
+nav .boton-gris { background: rgba(255, 255, 255, 0.25); }
+nav .boton-gris:hover { background: rgba(255, 255, 255, 0.4); }
+
+/* Formularios */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label { font-weight: bold; margin-top: 6px; }
+
+input[type="text"], input[type="password"], textarea, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--borde);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fffdfb;
+    transition: border-color 0.2s;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--principal);
+}
+
+textarea { resize: vertical; }
+
+input[type="submit"] { margin-top: 12px; }
+
+.mensaje-error {
+    background: #fde8e8;
+    color: var(--rojo-oscuro);
+    border-left: 4px solid var(--rojo);
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+
+/* Cajas centradas (login, registro y nueva tarea) */
+.caja-centro {
+    margin: 60px auto;
+    padding: 32px;
+    background: var(--tarjeta);
+    border-radius: 18px;
+    max-width: 420px;
+    box-shadow: var(--sombra);
+}
+
+.caja-centro h1, .caja-centro h2 { margin-top: 0; text-align: center; }
+.caja-centro p { text-align: center; color: var(--texto-suave); }
+
+.caja-centro > a { display: block; margin-top: 12px; }
+.caja-centro > a button { width: 100%; }
+
+/* Lista de tareas */
+.contenedor {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.cabecera-tareas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cabecera-tareas h2 { margin: 0; font-size: 1.8rem; }
+
+.contador { color: var(--texto-suave); margin: 4px 0 20px; }
+
+.vacio {
+    text-align: center;
+    color: var(--texto-suave);
+    background: var(--tarjeta);
+    border: 2px dashed var(--borde);
+    border-radius: 14px;
+    padding: 32px;
+}
+
+.tarea {
+    background: var(--tarjeta);
+    border-radius: 14px;
+    border-left: 6px solid var(--principal);
+    padding: 16px 20px;
+    margin: 14px 0;
+    box-shadow: var(--sombra);
+    transition: transform 0.15s;
+}
+
+.tarea:hover { transform: translateY(-2px); }
+
+.tarea h3 { margin: 0 0 6px; font-size: 1.2rem; }
+.tarea p { margin: 4px 0; }
+
+/* Etiqueta de prioridad */
+.etiqueta {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 2px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.prioridad-alta { background: #fde8e8; color: var(--rojo-oscuro); }
+.prioridad-media { background: #fff1d6; color: #a86a00; }
+.prioridad-baja { background: #e3f4ec; color: var(--verde-oscuro); }
+.compartida { background: #ece9fd; color: #5a4bd1; }
+
+/* Etiquetas que crea el usuario */
+.lista-etiquetas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 4px 0;
+}
+
+.etiqueta-usuario { background: #e0f2f7; color: #1f7a8c; margin-bottom: 0; }
+a.etiqueta-usuario:hover { background: #1f7a8c; color: #fff; text-decoration: none; }
+
+/* Aviso de que la lista está filtrada por una etiqueta */
+.filtro-activo {
+    background: #e0f2f7;
+    color: #1f7a8c;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin: 16px 0 0;
+}
+
+.filtro-activo a { margin-left: 8px; }
+
+/* Etiqueta de estado */
+.terminada { background: var(--verde); color: #fff; }
+.pendiente { background: #e6eef8; color: #3d5a80; }
+
+/* Lista de usuarios con los que ya está compartida */
+.lista-compartida { color: var(--texto-suave); text-align: center; }
+
+/* El borde de la tarjeta pendiente es del color de su prioridad */
+.tarea.alta { border-left-color: var(--rojo); }
+.tarea.media { border-left-color: #f5a623; }
+.tarea.baja { border-left-color: var(--verde); }
+
+.tarea.hecha {
+    border-left-color: var(--verde);
+    opacity: 0.7;
+}
+
+.tarea.hecha h3 {
+    text-decoration: line-through;
+    color: var(--texto-suave);
+}
+
+.acciones {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+/* En el móvil los botones de arriba ocupan su propia línea */
+@media (max-width: 500px) {
+    .nav-right { margin-left: 0; }
+    .cabecera-tareas { flex-direction: column; align-items: flex-start; gap: 12px; }
+}

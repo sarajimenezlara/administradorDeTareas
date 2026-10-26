@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css">
+        <title>Editar tarea</title>
+    </head>
+    <body>
+        <div class="caja-centro">
+        <h2>Editar tarea</h2>
+        <?php if (!empty($error)): ?>
+            <p class="mensaje-error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+        <form method="POST" action="index.php?c=task&action=editar&id=<?= $task->getId() ?>">
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" maxlength="150" value="<?= htmlspecialchars($_POST['titulo'] ?? $task->getTitulo()) ?>" required>
+
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" rows="4"><?= htmlspecialchars($_POST['descripcion'] ?? $task->getDescripcion() ?? '') ?></textarea>
+
+            <label for="prioridad">Prioridad:</label>
+            <?php $prioSel = $_POST['prioridad'] ?? $task->getPrioridad(); ?>
+            <select name="prioridad" id="prioridad">
+                <?php foreach (Task::PRIORIDADES as $clave => $nombre): ?>
+                    <option value="<?= $clave ?>" <?= $prioSel === $clave ? 'selected' : '' ?>><?= $nombre ?></option>
+                <?php endforeach; ?>
+            </select>
+
+            <?php /* Las etiquetas actuales se escriben en el campo separadas por comas.
+                     Para borrar una se quita del texto y para añadir se escribe otra con una coma */ ?>
+            <?php $nombresEtiquetas = array_map(fn($e) => $e->getNombre(), $task->getEtiquetas()); ?>
+            <label for="etiquetas">Etiquetas (separadas por comas):</label>
+            <input type="text" id="etiquetas" name="etiquetas" placeholder="clase, urgente, examen" value="<?= htmlspecialchars($_POST['etiquetas'] ?? implode(', ', $nombresEtiquetas)) ?>">
+
+            <input type="submit" value="Guardar cambios">
+        </form>
+        <a href="index.php?c=task&action=index"><button type="button" class="boton-gris">Volver a mis tareas</button></a>
+        </div>
+    </body>
+</html>

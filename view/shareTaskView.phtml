@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css">
+        <title>Compartir tarea</title>
+    </head>
+    <body>
+        <div class="caja-centro">
+        <h2>Compartir "<?= htmlspecialchars($task->getTitulo()) ?>"</h2>
+        <p>El usuario con el que la compartas podrá editarla, marcarla como hecha y quitarla.</p>
+        <?php if (!empty($error)): ?>
+            <p class="mensaje-error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+        <form method="POST" action="index.php?c=task&action=compartir&id=<?= $task->getId() ?>">
+            <label for="nombre">Nombre del usuario:</label>
+            <input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>" required>
+
+            <input type="submit" value="Compartir">
+        </form>
+        <?php if (!empty($compartidaCon)): ?>
+            <p class="lista-compartida">Ya compartida con: <?= htmlspecialchars(implode(', ', $compartidaCon)) ?></p>
+        <?php endif; ?>
+        <a href="index.php?c=task&action=index"><button type="button" class="boton-gris">Volver a mis tareas</button></a>
+        </div>
+    </body>
+</html>

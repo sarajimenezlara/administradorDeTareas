@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css">
+        <title>Mis tareas</title>
+    </head>
+    <body>
+        <nav>
+            <h1>Gestor de Tareas</h1>
+            <span class="nav-right">Hola, <?= htmlspecialchars($user->getNombre()) ?></span>
+            <a href="index.php?c=user&action=logout"><button class="boton-gris">Cerrar sesión</button></a>
+        </nav>
+
+        <div class="contenedor">
+        <div class="cabecera-tareas">
+            <h2>Mis tareas</h2>
+            <a href="index.php?c=task&action=nueva"><button>+ Nueva tarea</button></a>
+        </div>
+        <?php if ($etiquetaActual !== null): ?>
+            <p class="filtro-activo">
+                Mostrando las tareas con la etiqueta <strong>#<?= htmlspecialchars($etiquetaActual) ?></strong>
+                <a href="index.php?c=task&action=index">Ver todas</a>
+            </p>
+        <?php endif; ?>
+        <p class="contador"><?= $user->getNumPendientes() ?> pendiente(s) de <?= count($user->getTareas()) ?> tarea(s)</p>
+
+        <?php if (empty($user->getTareas())): ?>
+            <p class="vacio"><?= $etiquetaActual !== null ? 'No tienes tareas con esa etiqueta.' : 'No tienes tareas todavía. ¡Añade una!' ?></p>
+            <?php endif; ?>
+
+        <?php foreach ($user->getTareas() as $task): ?>
+            <div class="tarea <?= $task->getPrioridad() ?> <?= $task->isCompletada() ? 'hecha' : '' ?>">
+                <h3><?= htmlspecialchars($task->getTitulo()) ?></h3>
+                <?php if ($task->isCompletada()): ?>
+                    <span class="etiqueta terminada">Terminada</span>
+                <?php else: ?>
+                    <span class="etiqueta pendiente">Pendiente</span>
+                <?php endif; ?>
+                <span class="etiqueta prioridad-<?= $task->getPrioridad() ?>">Prioridad <?= Task::PRIORIDADES[$task->getPrioridad()] ?></span>
+                <?php if ($task->getUsuarioId() !== $user->getId()): ?>
+                    <span class="etiqueta compartida">Compartida contigo</span>
+                <?php endif; ?>
+                <?php if (!empty($task->getEtiquetas())): ?>
+                    <?php /* Al pinchar en una etiqueta se ven solo las tareas que la tienen.
+                             urlencode prepara el texto para ir en la URL (por si lleva espacios o tildes) */ ?>
+                    <div class="lista-etiquetas">
+                        <?php foreach ($task->getEtiquetas() as $etiqueta): ?>
+                            <a class="etiqueta etiqueta-usuario" href="index.php?c=task&action=index&etiqueta=<?= urlencode($etiqueta->getNombre()) ?>">#<?= htmlspecialchars($etiqueta->getNombre()) ?></a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ($task->getDescripcion()): ?>
+                    <?php /* htmlspecialchars evita que se pueda meter HTML en el texto y nl2br respeta los saltos de línea */ ?>
+                    <p><?= nl2br(htmlspecialchars($task->getDescripcion())) ?></p>
+                <?php endif; ?>
+
+                <div class="acciones">
+                    <?php /* Los input hidden no se ven, pero mandan el id de la tarea y si se marca como hecha (1) o pendiente (0) */ ?>
+                    <form action="index.php?c=task&action=completar" method="POST">
+                        <input type="hidden" name="id" value="<?= $task->getId() ?>">
+                        <?php if ($task->isCompletada()): ?>
+                            <input type="hidden" name="completada" value="0">
+                            <button type="submit" class="boton-gris">Marcar como pendiente</button>
+                        <?php else: ?>
+                            <input type="hidden" name="completada" value="1">
+                            <button type="submit" class="boton-verde">Marcar como hecha</button>
+                        <?php endif; ?>
+                    </form>
+                    <a href="index.php?c=task&action=editar&id=<?= $task->getId() ?>"><button type="button" class="boton-editar">Editar</button></a>
+                    <?php if ($task->getUsuarioId() === $user->getId()): ?>
+                        <a href="index.php?c=task&action=compartir&id=<?= $task->getId() ?>"><button type="button" class="boton-compartir">Compartir</button></a>
+                    <?php endif; ?>
+                    <?php if ($task->isCompletada()): ?>
+                        <form action="index.php?c=task&action=quitar" method="POST">
+                            <input type="hidden" name="id" value="<?= $task->getId() ?>">
+                            <button type="submit" class="boton-rojo">Quitar de la lista</button>
+                        </form>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+        </div>
+    </body>
+</html>
